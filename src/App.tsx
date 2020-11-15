@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.scss";
+import { Container } from "react-bootstrap";
+import NoteModel from "./models/noteModel";
+import AppRouter from "./routes/appRouter";
+import NoteContextProvider from "./contexts/noteContextProvider";
+import { getFromStorage, StorageKeys } from "./util/localStorage";
+import seedNotes from "./util/seedNotes";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
+
+  const notes: NoteModel[] = notesFromStorage ?? seedNotes();
+
+	return (
+    <NoteContextProvider initialNotes={notes}>
+      <Container>
+        <h1>My app</h1>
+        <AppRouter/>
+      </Container>
+    </NoteContextProvider>
+	);
 }
 
 export default App;

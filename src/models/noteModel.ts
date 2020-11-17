@@ -16,8 +16,8 @@ class NoteModel {
     this.id = id ?? uuid();
     this.title = title;
     this.description = "";
-    this.tags = [];
-    this.colorMap = {};
+    this.tags = ["untagged"];
+    this.colorMap = {"untagged": TagColors.Grey};
     this.created = new Date();
     this.updated = new Date();
   }

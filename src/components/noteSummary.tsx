@@ -5,14 +5,13 @@ import NoteHeader from "./noteHeader";
 
 type NoteSummaryProps = {
 	note: NoteModel;
-	link?: boolean;
 };
 
 const NoteSummary = (props: NoteSummaryProps) => {
 	return (
 		<Col xs={12}>
 			<Row>
-				<NoteHeader note={props.note} link/>
+				<NoteHeader note={props.note} />
 			</Row>
 			<Row>
 				{props.note.description.length === 0 ? (

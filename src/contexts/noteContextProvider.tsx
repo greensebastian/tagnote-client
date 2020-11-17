@@ -6,6 +6,7 @@ import { setInStorage, StorageKeys } from "../util/localStorage";
 type NoteContextProps = {
 	notes: NoteModel[];
 	setNote: (note: NoteModel) => void;
+	deleteNote: (id: string) => void;
 	tags: (predicate?: (tag: string) => boolean) => string[];
 };
 
@@ -16,6 +17,7 @@ type NoteContextProviderProps = {
 export const NoteContext = React.createContext<NoteContextProps>({
 	notes: [],
 	setNote: (_) => {},
+	deleteNote: (_) => {},
 	tags: () => [],
 });
 
@@ -39,6 +41,14 @@ const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
 		setNotes(newNotes);
 	};
 
+	const deleteNote = (id: string) => {
+		const noteToRemove = notes.find((note) => note.id === id);
+		if (noteToRemove){
+			notes.splice(notes.indexOf(noteToRemove), 1);
+			setNotes([...notes]);
+		}
+	}
+
 	const tags = (predicate?: (tag: string) => boolean) => {
 		let allTags = new Set<string>();
 		notes.forEach(note => note.tags.forEach(allTags.add));
@@ -59,7 +69,7 @@ const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
 	}, [notes]);
 
 	return (
-		<NoteContext.Provider value={{ notes: notes, setNote: setNote, tags: tags }}>
+		<NoteContext.Provider value={{ notes: notes, setNote: setNote, deleteNote: deleteNote, tags: tags }}>
 			{props.children}
 		</NoteContext.Provider>
 	);

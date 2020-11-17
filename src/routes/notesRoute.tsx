@@ -30,7 +30,7 @@ const NotesRoute = () => {
 	};
 	return (
 		<Col>
-			<Row className="mt-3">
+			<Row>
 				<Col>
 					<Row>
 						<Filter

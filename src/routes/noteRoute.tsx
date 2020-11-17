@@ -5,14 +5,14 @@ import { NoteParameters } from "./appRouter";
 import Note from "../components/note";
 
 const NoteRoute = (props: RouteComponentProps<NoteParameters>) => {
-	const { notes, setNote } = useContext(NoteContext);
+	const { notes, setNote, deleteNote } = useContext(NoteContext);
 	const note = notes.find((note) => note.id === props.match.params.id);
 	if (!note) {
 		throw new Error(
 			"Note with id " + props.match.params.id + " does not exist in context"
 		);
 	}
-	return <Note note={note} setNote={setNote} />;
+	return <Note note={note} setNote={setNote} deleteNote={deleteNote} />;
 };
 
 export default NoteRoute;

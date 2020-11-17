@@ -15,7 +15,7 @@ function App() {
 	return (
 		<NoteContextProvider initialNotes={notes}>
       <Container>
-        <h1 className="mt-4">TagNote</h1>
+        <h1 className="mt-4 mb-3">TagNote</h1>
         <AppRouter />
       </Container>
 		</NoteContextProvider>

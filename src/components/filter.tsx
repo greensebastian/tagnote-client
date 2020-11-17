@@ -9,6 +9,7 @@ type FilterProps = {
 };
 
 const Filter = ({ setFilter }: FilterProps) => {
+	// TODO persist between mounts
   return <Form.Control type="text" placeholder="Filter..." onChange={(e) => setFilter(buildPredicate(e.target.value))}/>
 };
 

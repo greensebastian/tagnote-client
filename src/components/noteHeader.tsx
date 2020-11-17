@@ -2,12 +2,14 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import NoteModel from "../models/noteModel";
+import TagModel from "../models/tagModel";
 import ConditionalWrapper from "./conditionalWrapper";
 import TagList from "./tagList";
 
 type NoteHeaderProps = {
 	note: NoteModel;
 	link?: boolean;
+	onTagClick?: (tag: TagModel) => void;
 };
 
 const NoteHeader = (props: NoteHeaderProps) => {
@@ -23,7 +25,7 @@ const NoteHeader = (props: NoteHeaderProps) => {
 				{titleRow}
 			</ConditionalWrapper>
 			<Row>
-				<TagList tags={props.note.tags} />
+				<TagList onClick={props.onTagClick} tags={NoteModel.tagModels(props.note)} />
 			</Row>
 		</Col>
 	);

@@ -1,10 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { useState } from "react";
 import NoteModel from "../models/noteModel";
+import TagModel from "../models/tagModel";
 
 type NoteContextProps = {
 	notes: NoteModel[];
 	setNote: (note: NoteModel) => void;
+	tags: (predicate?: (tag: string) => boolean) => string[];
 };
 
 type NoteContextProviderProps = {
@@ -14,6 +16,7 @@ type NoteContextProviderProps = {
 export const NoteContext = React.createContext<NoteContextProps>({
 	notes: [],
 	setNote: (_) => {},
+	tags: () => [],
 });
 
 const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
@@ -34,8 +37,14 @@ const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
 		setNotes(newNotes);
 	};
 
+	const tags = (predicate?: (tag: string) => boolean) => {
+		let allTags = new Set<string>();
+		notes.forEach(note => note.tags.forEach(allTags.add));
+		return Array.from(allTags).filter(tag => predicate ? predicate(tag) : true);
+	}
+
 	return (
-		<NoteContext.Provider value={{ notes: notes, setNote: setNote }}>
+		<NoteContext.Provider value={{ notes: notes, setNote: setNote, tags: tags }}>
 			{props.children}
 		</NoteContext.Provider>
 	);

@@ -10,7 +10,7 @@ type NoteSummaryProps = {
 
 const NoteSummary = (props: NoteSummaryProps) => {
 	return (
-		<Col>
+		<Col xs={12}>
 			<Row>
 				<NoteHeader note={props.note} link/>
 			</Row>

@@ -6,6 +6,7 @@ import EnumDictionary from "../util/enumDictionary";
 
 type TagProps = {
 	tag: TagModel;
+	onClick?: (tag: TagModel) => void;
 };
 
 const tagMap: EnumDictionary<TagColors, string> = {
@@ -20,8 +21,12 @@ const tagMap: EnumDictionary<TagColors, string> = {
 };
 
 const Tag = (props: TagProps) => {
+	const handleClick = () => {
+		if (props.onClick) props.onClick(props.tag);
+	}
+
 	return (
-		<Badge className="mr-1 mb-1" pill variant={tagMap[props.tag.color]}>
+		<Badge onClick={handleClick} className="mr-1 mb-1" pill variant={tagMap[props.tag.color]}>
 			{props.tag.name}
 		</Badge>
 	);

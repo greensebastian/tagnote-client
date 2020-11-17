@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useState } from "react";
 import NoteModel from "../models/noteModel";
-import TagModel from "../models/tagModel";
 
 type NoteContextProps = {
 	notes: NoteModel[];

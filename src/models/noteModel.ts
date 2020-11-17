@@ -18,6 +18,8 @@ class NoteModel {
     this.colorMap = {};
   }
 
+  static resolver = (model: any) => Object.setPrototypeOf(model, NoteModel.prototype) as NoteModel;
+
   static tagModels = (note: NoteModel) => note.tags.map(tag => new TagModel(tag, note.colorMap[tag]));
 }
 

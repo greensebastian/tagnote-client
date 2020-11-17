@@ -10,7 +10,7 @@ interface Resolver<TOut> {
 };
 
 const resolvers: EnumDictionary<StorageKeys,Resolver<any>> = {
-  [StorageKeys.Notes]: (data) => Array.from(JSON.parse(data)).map(NoteModel.resolver)
+  [StorageKeys.Notes]: (data) => Array.from(JSON.parse(data)).map(NoteModel.resolve)
 }
 
 export const getFromStorage = <TOut>(key: StorageKeys, resolver?: Resolver<TOut>) => {

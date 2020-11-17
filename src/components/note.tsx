@@ -23,35 +23,37 @@ const Note = ({ note, setNote }: NoteProps) => {
 		});
 	};
 
-	const defaultColor = mapEnum(TagColors, (color: number) => color)[0]
+	const defaultColor = mapEnum(TagColors, (color: number) => color)[0];
 
 	const [tagName, setTagName] = useState("");
 	const [tagColor, setTagColor] = useState(defaultColor);
 
 	const addTag = () => {
-		if (tagName.length > 0 && !note.tags.includes(tagName)){
+		if (tagName.length > 0 && !note.tags.includes(tagName)) {
 			note.tags.push(tagName);
 			note.colorMap[tagName] = tagColor;
 			setNote({
-				...note
-			})
+				...note,
+			});
 		}
 		setTagName("");
-		setTagColor(defaultColor);
-	}
+		//setTagColor(defaultColor);
+	};
 
 	const resetTag = (tag: TagModel) => {
 		note.tags.splice(note.tags.indexOf(tag.name), 1);
-		setNote({...note});
+		setNote({ ...note });
 		setTagName(tag.name);
 		setTagColor(tag.color);
-	}
+	};
 
 	const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		addTag();
-	}
+	};
 
+	//TODO editable title
+	//TODO delete note
 	return (
 		<Col>
 			<Row>
@@ -61,17 +63,32 @@ const Note = ({ note, setNote }: NoteProps) => {
 				<Form className="w-100" onSubmit={handleSubmit}>
 					<Form.Row className="align-items-center mb-2">
 						<Col xs={6}>
-							<Form.Control size="sm" type="text" placeholder="Add tag.." value={tagName} onChange={(e) => setTagName(e.target.value)}/>
+							<Form.Control
+								size="sm"
+								type="text"
+								placeholder="Add tag.."
+								value={tagName}
+								onChange={(e) => setTagName(e.target.value)}
+							/>
 						</Col>
 						<Col xs={3}>
-							<Form.Control size="sm" as="select" value={tagColor} onChange={(e) => setTagColor(Number(e.target.value))}>
+							<Form.Control
+								size="sm"
+								as="select"
+								value={tagColor}
+								onChange={(e) => setTagColor(Number(e.target.value))}
+							>
 								{mapEnum(TagColors, (color: number) => (
-									<option key={color} value={color}>{TagColors[color]}</option>
+									<option key={color} value={color}>
+										{TagColors[color]}
+									</option>
 								))}
 							</Form.Control>
 						</Col>
 						<Col xs={3}>
-							<Button size="sm" className="w-100" onClick={() => addTag()}>Add</Button>
+							<Button size="sm" className="w-100" onClick={() => addTag()}>
+								Add
+							</Button>
 						</Col>
 					</Form.Row>
 				</Form>

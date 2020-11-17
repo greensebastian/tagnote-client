@@ -8,17 +8,17 @@ import { getFromStorage, StorageKeys } from "./util/localStorage";
 import seedNotes from "./util/seedNotes";
 
 function App() {
-  const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
+	const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
 
-  const notes: NoteModel[] = notesFromStorage ?? seedNotes();
+	const notes: NoteModel[] = notesFromStorage ?? seedNotes();
 
 	return (
-    <NoteContextProvider initialNotes={notes}>
+		<NoteContextProvider initialNotes={notes}>
       <Container>
         <h1 className="mt-4">TagNote</h1>
-        <AppRouter/>
+        <AppRouter />
       </Container>
-    </NoteContextProvider>
+		</NoteContextProvider>
 	);
 }
 

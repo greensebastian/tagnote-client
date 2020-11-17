@@ -47,13 +47,18 @@ const Note = ({ note, setNote }: NoteProps) => {
 		setTagColor(tag.color);
 	}
 
+	const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		addTag();
+	}
+
 	return (
 		<Col>
 			<Row>
 				<NoteHeader onTagClick={resetTag} note={note} />
 			</Row>
 			<Row>
-				<Form className="w-100">
+				<Form className="w-100" onSubmit={handleSubmit}>
 					<Form.Row className="align-items-center mb-2">
 						<Col xs={6}>
 							<Form.Control size="sm" type="text" placeholder="Add tag.." value={tagName} onChange={(e) => setTagName(e.target.value)}/>
@@ -66,7 +71,7 @@ const Note = ({ note, setNote }: NoteProps) => {
 							</Form.Control>
 						</Col>
 						<Col xs={3}>
-							<Button size="sm" className="w-100" onClick={() => addTag()}>Add tag</Button>
+							<Button size="sm" className="w-100" onClick={() => addTag()}>Add</Button>
 						</Col>
 					</Form.Row>
 				</Form>

@@ -1,4 +1,3 @@
-import { clear } from "console";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import TagModel from "../models/tagModel";

@@ -26,7 +26,7 @@ const Tag = (props: TagProps) => {
 	}
 
 	return (
-		<Badge onClick={handleClick} className="mr-1 mb-1" pill variant={tagMap[props.tag.color]}>
+		<Badge onClick={handleClick} className="mr-1 mb-1 note-tag" pill variant={tagMap[props.tag.color]}>
 			{props.tag.name}
 		</Badge>
 	);

@@ -2,13 +2,13 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
 type ConfirmModalProps = {
-  show: boolean,
-  onOk: (() => void),
-  onCancel: (() => void),
-  heading: string,
-  body: JSX.Element,
-  okText: string
-}
+  show: boolean;
+  onOk: () => void;
+  onCancel: () => void;
+  heading: string;
+  body: JSX.Element;
+  okText: string;
+};
 
 const ConfirmModal = (props: ConfirmModalProps) => {
   return (
@@ -24,15 +24,17 @@ const ConfirmModal = (props: ConfirmModalProps) => {
           {props.heading}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {props.body}
-      </Modal.Body>
+      <Modal.Body>{props.body}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onOk} variant="primary">{props.okText}</Button>
-        <Button onClick={props.onCancel} variant="secondary">Cancel</Button>
+        <Button onClick={props.onOk} variant="primary">
+          {props.okText}
+        </Button>
+        <Button onClick={props.onCancel} variant="secondary">
+          Cancel
+        </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default ConfirmModal;

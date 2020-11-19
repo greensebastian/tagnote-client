@@ -4,8 +4,8 @@ import NoteRoute from "./noteRoute";
 import NotesRoute from "./notesRoute";
 
 export type NoteParameters = {
-  id: string
-}
+  id: string;
+};
 
 const AppRouter = () => {
   return (
@@ -14,6 +14,6 @@ const AppRouter = () => {
       <Route path="/:id" exact component={NoteRoute}></Route>
     </BrowserRouter>
   );
-}
+};
 
 export default AppRouter;

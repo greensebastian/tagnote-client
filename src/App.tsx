@@ -9,25 +9,25 @@ import seedNotes from "./util/seedNotes";
 import SaveAlert from "./components/saveAlert";
 
 function App() {
-	const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
+  const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
 
-	const notes: NoteModel[] = notesFromStorage ?? seedNotes();
+  const notes: NoteModel[] = notesFromStorage ?? seedNotes();
 
-	return (
-		<NoteContextProvider initialNotes={notes}>
-			<Navbar bg="dark" variant="dark" className="mb-2">
-				<Container>
-					<Navbar.Brand href="/">Tag Note</Navbar.Brand>
-				</Container>
-			</Navbar>
-			<Container>
-				<SaveAlert />
-				<div className="px-3 px-sm-0">
-					<AppRouter />
-				</div>
-			</Container>
-		</NoteContextProvider>
-	);
+  return (
+    <NoteContextProvider initialNotes={notes}>
+      <Navbar bg="dark" variant="dark" className="mb-2">
+        <Container>
+          <Navbar.Brand href="/">Tag Note</Navbar.Brand>
+        </Container>
+      </Navbar>
+      <Container>
+        <SaveAlert />
+        <div className="px-3 px-sm-0">
+          <AppRouter />
+        </div>
+      </Container>
+    </NoteContextProvider>
+  );
 }
 
 export default App;

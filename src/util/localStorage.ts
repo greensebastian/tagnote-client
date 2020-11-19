@@ -2,26 +2,30 @@ import NoteModel from "../models/noteModel";
 import EnumDictionary from "./enumDictionary";
 
 export enum StorageKeys {
-  Notes = "notes"
+  Notes = "notes",
 }
 
 interface Resolver<TOut> {
-  (data: string): TOut
+  (data: string): TOut;
+}
+
+const resolvers: EnumDictionary<StorageKeys, Resolver<any>> = {
+  [StorageKeys.Notes]: (data) =>
+    Array.from(JSON.parse(data)).map(NoteModel.resolve),
 };
 
-const resolvers: EnumDictionary<StorageKeys,Resolver<any>> = {
-  [StorageKeys.Notes]: (data) => Array.from(JSON.parse(data)).map(NoteModel.resolve)
-}
-
-export const getFromStorage = <TOut>(key: StorageKeys, resolver?: Resolver<TOut>) => {
+export const getFromStorage = <TOut>(
+  key: StorageKeys,
+  resolver?: Resolver<TOut>
+) => {
   var text = localStorage.getItem(key);
-  if (!resolver){
+  if (!resolver) {
     resolver = resolvers[key];
   }
-  resolver = resolver ?? (data => JSON.parse(data));
-  return (text) ? resolver(text) : null;
-}
+  resolver = resolver ?? ((data) => JSON.parse(data));
+  return text ? resolver(text) : null;
+};
 
 export const setInStorage = <TIn>(key: StorageKeys, value: TIn) => {
   localStorage.setItem(key, JSON.stringify(value));
-}
+};

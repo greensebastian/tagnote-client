@@ -7,16 +7,17 @@ const seedNotes = () => {
 
   let note = new NoteModel("This is an example note!");
   note.description = "Here you can type whatever you want to note down.";
-	note.tags.push("example");
+  if (note.tags.length > 0) note.tags.pop();
+  note.tags.push("example");
   note.tags.push("generated");
-  note.colorMap[note.tags[0]] = TagColors.Green;
-  note.colorMap[note.tags[1]] = TagColors.Yellow;
+  note.colorMap[note.tags[0]] = TagColors.Yellow;
+  note.colorMap[note.tags[1]] = TagColors.Blue;
 
   notes.push(note);
-  
+
   setInStorage(StorageKeys.Notes, notes);
 
   return notes;
-}
+};
 
 export default seedNotes;

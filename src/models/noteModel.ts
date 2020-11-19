@@ -12,12 +12,12 @@ class NoteModel {
   created: Date;
   updated: Date;
 
-  constructor(title: string, id?: string){
+  constructor(title: string, id?: string) {
     this.id = id ?? uuid();
     this.title = title;
     this.description = "";
     this.tags = ["untagged"];
-    this.colorMap = {"untagged": TagColors.Grey};
+    this.colorMap = { untagged: TagColors.Grey };
     this.created = new Date();
     this.updated = new Date();
   }
@@ -29,7 +29,8 @@ class NoteModel {
     return rich;
   };
 
-  static tagModels = (note: NoteModel) => note.tags.map(tag => new TagModel(tag, note.colorMap[tag]));
+  static tagModels = (note: NoteModel) =>
+    note.tags.map((tag) => new TagModel(tag, note.colorMap[tag]));
 }
 
 export default NoteModel;

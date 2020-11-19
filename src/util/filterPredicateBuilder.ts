@@ -4,7 +4,12 @@ import { NoteFilterPredicate } from "../routes/notesRoute";
 export const buildPredicate = (search: string): NoteFilterPredicate => {
   const words = search.trim().toLowerCase().split(" ");
   const newPredicate: NoteFilterPredicate = (note) => {
-    return note.tags && note.tags.some(tag => words.every(word => tag.toLowerCase().includes(word)));
-  }
+    return (
+      note.tags &&
+      note.tags.some((tag) =>
+        words.every((word) => tag.toLowerCase().includes(word))
+      )
+    );
+  };
   return newPredicate;
-}
+};

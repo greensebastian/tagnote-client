@@ -6,7 +6,7 @@ enum TagColors {
   Yellow,
   Teal,
   Light,
-  Dark
+  Dark,
 }
 
 export default TagColors;

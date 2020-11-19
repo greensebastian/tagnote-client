@@ -2,7 +2,7 @@
 
 This is a react app for rapid note-organization where each note is only categorized by a number of tags.
 
-It is hosted on [here on Google App Engine](https://tagnote.sebastiangreen.se)!
+It is hosted [here on Google App Engine](https://tagnote.sebastiangreen.se)!
 
 ## Usage
 

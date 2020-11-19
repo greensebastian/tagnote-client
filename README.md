@@ -2,6 +2,8 @@
 
 This is a react app for rapid note-organization where each note is only categorized by a number of tags.
 
+It is hosted on [here on Google App Engine](htttps://tagnote.sebastiangreen.se)!
+
 ## Usage
 
 The app has two main areas, which are the notes overview and the note editor. Access the notes editor by clicking any of the existing notes, or by making a new one.

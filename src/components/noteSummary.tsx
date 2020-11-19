@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import NoteModel from "../models/noteModel";
 import NoteHeader from "./noteHeader";
 
@@ -9,18 +10,22 @@ type NoteSummaryProps = {
 
 const NoteSummary = (props: NoteSummaryProps) => {
   return (
-    <Col xs={12}>
-      <Row>
-        <NoteHeader note={props.note} />
-      </Row>
-      <Row>
-        {props.note.description.length === 0 ? (
-          ""
-        ) : (
-          <p className="text-secondary ellipsis">{props.note.description}</p>
-        )}
-      </Row>
-    </Col>
+    <Link className="text-decoration-none w-100" to={"/" + props.note.id}>
+      <Col xs={12}>
+        <Row>
+          <NoteHeader note={props.note} />
+        </Row>
+        <Row>
+          {props.note.description.length === 0 ? (
+            ""
+          ) : (
+            <p className="text-secondary summary-description">
+              {props.note.description}
+            </p>
+          )}
+        </Row>
+      </Col>
+    </Link>
   );
 };
 

@@ -5,7 +5,7 @@ import Tag from "./tag";
 
 type TagListProps = {
 	tags: TagModel[];
-	onClick?: (tag: TagModel) => void;
+	onTagClick?: (tag: TagModel) => void;
 };
 
 const TagList = (props: TagListProps) => {
@@ -13,7 +13,7 @@ const TagList = (props: TagListProps) => {
 		<Col>
 			<Row>
 				{props.tags.map((tag, index) => (
-					<Tag key={index} tag={tag} onClick={props.onClick}/>
+					<Tag key={index} tag={tag} onTagClick={props.onTagClick}/>
 				))}
 			</Row>
 		</Col>

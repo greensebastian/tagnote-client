@@ -33,7 +33,7 @@ const EditableNoteHeader = ({ note, setNote, onTagClick }: EditableNoteHeaderPro
 			</Row>
 			<Row className="mb-1">
 				<TagList
-					onClick={onTagClick}
+					onTagClick={onTagClick}
 					tags={NoteModel.tagModels(note)}
 				/>
 			</Row>

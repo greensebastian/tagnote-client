@@ -8,6 +8,8 @@ type NoteContextProps = {
 	setNote: (note: NoteModel) => void;
 	deleteNote: (id: string) => void;
 	tags: (predicate?: (tag: string) => boolean) => string[];
+	unsaved: boolean;
+	save: () => void;
 };
 
 type NoteContextProviderProps = {
@@ -19,13 +21,24 @@ export const NoteContext = React.createContext<NoteContextProps>({
 	setNote: (_) => {},
 	deleteNote: (_) => {},
 	tags: () => [],
+	unsaved: false,
+	save: () => {}
 });
 
 const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
 	props
 ) => {
 	const initialNotes = props.initialNotes ?? [];
-	const [notes, setNotes] = useState(initialNotes);
+	const [unsaved, setUnsaved] = useState(false);
+	const [notes, setNoteState] = useState(initialNotes);
+	const setNotes = (notes: NoteModel[]): void => {
+		setNoteState(notes);
+		setUnsaved(true);
+	}
+	const save = () => {
+		setInStorage(StorageKeys.Notes, notes);
+		setUnsaved(false);
+	}
 
 	const setNote = (note: NoteModel) => {
 		note = NoteModel.resolve(note);
@@ -57,19 +70,19 @@ const NoteContextProvider: FunctionComponent<NoteContextProviderProps> = (
 
 	// Register handler to save notes
 	useEffect(() => {
-		const handler = (e: KeyboardEvent) => {
+		const saveHandler = (e: KeyboardEvent) => {
 			if (e.code !== "KeyS" || !e.ctrlKey) return;
 			e.preventDefault();
 			setInStorage(StorageKeys.Notes, notes);
+			setUnsaved(false);
 		};
 
 		const keypress = "keydown";
-		window.addEventListener(keypress, handler);
-		return () => window.removeEventListener(keypress, handler);
+		window.addEventListener(keypress, saveHandler);
 	}, [notes]);
 
 	return (
-		<NoteContext.Provider value={{ notes: notes, setNote: setNote, deleteNote: deleteNote, tags: tags }}>
+		<NoteContext.Provider value={{ notes: notes, setNote: setNote, deleteNote: deleteNote, tags: tags, unsaved: unsaved, save: save }}>
 			{props.children}
 		</NoteContext.Provider>
 	);

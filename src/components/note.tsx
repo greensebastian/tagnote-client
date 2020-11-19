@@ -61,66 +61,72 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
 		history.push("/");
 	};
 
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.nativeEvent.code === "Enter"){
+			e.preventDefault();
+			addTag();
+		}
+	}
+
 	return (
 		<>
-			<Col>
-				<Row>
-					<EditableNoteHeader
-						setNote={setNote}
-						onTagClick={resetTag}
-						note={note}
+			<Row>
+				<EditableNoteHeader
+					setNote={setNote}
+					onTagClick={resetTag}
+					note={note}
+				/>
+			</Row>
+			<Row>
+				<Form className="w-100" onSubmit={handleSubmit}>
+					<Form.Row className="align-items-center mb-2">
+						<Col xs={6}>
+							<Form.Control
+								size="sm"
+								type="text"
+								placeholder="Add tag.."
+								value={tagName}
+								onChange={(e) => setTagName(e.target.value)}
+								onKeyDown={handleKeyDown}
+							/>
+						</Col>
+						<Col xs={3}>
+							<Form.Control
+								size="sm"
+								as="select"
+								value={tagColor}
+								onChange={(e) => setTagColor(Number(e.target.value))}
+							>
+								{mapEnum(TagColors, (color: number) => (
+									<option key={color} value={color}>
+										{TagColors[color]}
+									</option>
+								))}
+							</Form.Control>
+						</Col>
+						<Col xs={3}>
+							<Button size="sm" className="w-100" onClick={() => addTag()}>
+								Add
+							</Button>
+						</Col>
+					</Form.Row>
+				</Form>
+			</Row>
+			<Row>
+				<Form className="w-100">
+					<Form.Control
+						as="textarea"
+						rows={10}
+						value={description}
+						onChange={handleChangedInput}
 					/>
-				</Row>
-				<Row>
-					<Form className="w-100" onSubmit={handleSubmit}>
-						<Form.Row className="align-items-center mb-2">
-							<Col xs={6}>
-								<Form.Control
-									size="sm"
-									type="text"
-									placeholder="Add tag.."
-									value={tagName}
-									onChange={(e) => setTagName(e.target.value)}
-								/>
-							</Col>
-							<Col xs={3}>
-								<Form.Control
-									size="sm"
-									as="select"
-									value={tagColor}
-									onChange={(e) => setTagColor(Number(e.target.value))}
-								>
-									{mapEnum(TagColors, (color: number) => (
-										<option key={color} value={color}>
-											{TagColors[color]}
-										</option>
-									))}
-								</Form.Control>
-							</Col>
-							<Col xs={3}>
-								<Button size="sm" className="w-100" onClick={() => addTag()}>
-									Add
-								</Button>
-							</Col>
-						</Form.Row>
-					</Form>
-				</Row>
-				<Row>
-					<Form className="w-100">
-						<Form.Control
-							as="textarea"
-							rows={10}
-							value={description}
-							onChange={handleChangedInput}
-						/>
-					</Form>
-				</Row>
-				<Row className="mt-2">
-					<Button variant="danger" onClick={() => setShowModal(true)}>
-						Delete note
-					</Button>
-				</Row>
-			</Col>
+				</Form>
+			</Row>
+			<Row className="mt-2">
+				<Button variant="danger" onClick={() => setShowModal(true)}>
+					Delete note
+				</Button>
+			</Row>
 			<ConfirmModal
 				show={showModal}
 				heading={"Delete note?"}

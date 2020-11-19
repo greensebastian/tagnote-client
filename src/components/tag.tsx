@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent, HTMLAttributes } from "react";
 import { Badge } from "react-bootstrap";
 import TagColors from "../models/tagColors";
 import TagModel from "../models/tagModel";
@@ -6,8 +6,8 @@ import EnumDictionary from "../util/enumDictionary";
 
 type TagProps = {
 	tag: TagModel;
-	onClick?: (tag: TagModel) => void;
-};
+	onTagClick?: (tag: TagModel) => void;
+} & HTMLAttributes<HTMLSpanElement>;
 
 const tagMap: EnumDictionary<TagColors, string> = {
 	[TagColors.Blue]: "primary",
@@ -20,13 +20,19 @@ const tagMap: EnumDictionary<TagColors, string> = {
 	[TagColors.Dark]: "dark",
 };
 
-const Tag = (props: TagProps) => {
+const Tag: FunctionComponent<TagProps> = (props) => {
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.nativeEvent.code === "Space" || e.nativeEvent.code === "Enter"){
+			e.preventDefault();
+			handleClick();
+		}
+	}
 	const handleClick = () => {
-		if (props.onClick) props.onClick(props.tag);
+		if (props.onTagClick) props.onTagClick(props.tag);
 	}
 
 	return (
-		<Badge onClick={handleClick} className="mr-1 mb-1 note-tag" pill variant={tagMap[props.tag.color]}>
+		<Badge tabIndex={0} onClick={handleClick} onKeyDown={handleKeyDown} className="mr-1 mb-1 note-tag" pill variant={tagMap[props.tag.color]}>
 			{props.tag.name}
 		</Badge>
 	);

@@ -29,7 +29,7 @@ const NotesRoute = () => {
 		history.push("/" + newNote.id);
 	};
 	return (
-		<Col>
+		<>
 			<Row>
 				<Col>
 					<Row>
@@ -52,7 +52,7 @@ const NotesRoute = () => {
 					<NoteSummary key={index} note={note} />
 				))}
 			</Row>
-		</Col>
+		</>
 	);
 };
 

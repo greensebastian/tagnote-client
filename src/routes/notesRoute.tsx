@@ -48,9 +48,12 @@ const NotesRoute = () => {
         </Col>
       </Row>
       <Row className="mt-2">
-        {notes.filter(filterState.predicate).map((note, index) => (
-          <NoteSummary key={index} note={note} />
-        ))}
+        {notes
+          .filter(filterState.predicate)
+          .sort((a, b) => (a.updated < b.updated ? 1 : -1))
+          .map((note, index) => (
+            <NoteSummary key={index} note={note} />
+          ))}
       </Row>
     </>
   );

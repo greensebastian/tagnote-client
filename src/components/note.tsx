@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import NoteModel from "../models/noteModel";
 import TagColors from "../models/tagColors";
@@ -32,6 +32,8 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
   const [tagName, setTagName] = useState("");
   const [tagColor, setTagColor] = useState(defaultColor);
 
+  const tagInput = useRef<HTMLInputElement>(null);
+
   const addTag = () => {
     if (tagName.length > 0 && !note.tags.includes(tagName)) {
       note.tags.push(tagName);
@@ -41,6 +43,7 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
       });
     }
     setTagName("");
+    tagInput.current!.focus();
   };
 
   const resetTag = (tag: TagModel) => {
@@ -79,7 +82,10 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
       </Row>
       <Row>
         <Form className="w-100" onSubmit={handleSubmit}>
-          <Form.Row className="align-items-center mb-2">
+          <Form.Row
+            className="align-items-center mb-2"
+            onKeyDown={handleKeyDown}
+          >
             <Col xs={6}>
               <Form.Control
                 size="sm"
@@ -87,7 +93,7 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
                 placeholder="Add tag.."
                 value={tagName}
                 onChange={(e) => setTagName(e.target.value)}
-                onKeyDown={handleKeyDown}
+                ref={tagInput}
               />
             </Col>
             <Col xs={3}>

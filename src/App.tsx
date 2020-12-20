@@ -1,20 +1,13 @@
 import React from "react";
 import "./App.scss";
 import { Container, Navbar } from "react-bootstrap";
-import NoteModel from "./models/noteModel";
 import AppRouter from "./routes/appRouter";
-import NoteContextProvider from "./contexts/noteContextProvider";
-import { getFromStorage, StorageKeys } from "./util/localStorage";
-import seedNotes from "./util/seedNotes";
 import SaveAlert from "./components/saveAlert";
+import NoteContextProviders from "./components/noteContextProviders";
 
 function App() {
-  const notesFromStorage = getFromStorage<NoteModel[]>(StorageKeys.Notes);
-
-  const notes: NoteModel[] = notesFromStorage ?? seedNotes();
-
   return (
-    <NoteContextProvider initialNotes={notes}>
+    <NoteContextProviders>
       <Navbar bg="dark" variant="dark" className="mb-2">
         <Container>
           <Navbar.Brand href="/">Tag Note</Navbar.Brand>
@@ -26,7 +19,7 @@ function App() {
           <AppRouter />
         </div>
       </Container>
-    </NoteContextProvider>
+    </NoteContextProviders>
   );
 }
 

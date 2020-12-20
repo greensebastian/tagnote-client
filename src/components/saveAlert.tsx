@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Alert, Col, Collapse, Row } from "react-bootstrap";
-import { NoteContext } from "../contexts/noteContextProvider";
+import { SaveContext } from "../contexts/saveContext";
 
 const SaveAlert = () => {
-  const { unsaved, save } = useContext(NoteContext);
+  const { unsaved, save } = useContext(SaveContext);
   return (
     <Row>
       <Col>

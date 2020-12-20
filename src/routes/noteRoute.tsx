@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { NoteContext } from "../contexts/noteContextProvider";
 import { NoteParameters } from "./appRouter";
 import Note from "../components/note";
+import { useNoteService } from "../contexts/noteServiceContext";
+import { useNotes } from "../contexts/notesContext";
 
 const NoteRoute = (props: RouteComponentProps<NoteParameters>) => {
-  const { notes, setNote, deleteNote } = useContext(NoteContext);
+  const { setNote, deleteNote } = useNoteService();
+  const notes = useNotes();
   const note = notes.find((note) => note.id === props.match.params.id);
   if (!note) {
     throw new Error(

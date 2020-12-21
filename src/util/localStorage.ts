@@ -1,18 +1,4 @@
-import NoteModel from "../models/noteModel";
-import EnumDictionary from "./enumDictionary";
-
-export enum StorageKeys {
-  Notes = "notes",
-}
-
-interface Resolver<TOut> {
-  (data: string): TOut;
-}
-
-const resolvers: EnumDictionary<StorageKeys, Resolver<any>> = {
-  [StorageKeys.Notes]: (data) =>
-    Array.from(JSON.parse(data)).map(NoteModel.resolve),
-};
+import { Resolver, resolvers, StorageKeys } from "./resolve";
 
 export const getFromStorage = <TOut>(
   key: StorageKeys,

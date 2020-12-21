@@ -1,6 +1,7 @@
 import NoteModel from "../models/noteModel";
 import TagColors from "../models/tagColors";
-import { setInStorage, StorageKeys } from "./localStorage";
+import { setInStorage } from "./localStorage";
+import { StorageKeys } from "./resolve";
 
 const seedNotes = () => {
   const notes: NoteModel[] = [];

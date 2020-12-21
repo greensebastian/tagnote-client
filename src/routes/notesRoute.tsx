@@ -5,7 +5,8 @@ import NoteModel from "../models/noteModel";
 import Filter from "../components/filter";
 import { useHistory } from "react-router-dom";
 import { useNotes } from "../contexts/notesContext";
-import { useNoteService } from "../contexts/noteServiceContext";
+import { useNoteService } from "../contexts/serviceContext";
+import SyncAccordion from "../components/syncAccordion";
 
 export type NoteFilterPredicate = {
   (note: NoteModel): boolean;
@@ -32,6 +33,12 @@ const NotesRoute = () => {
   };
   return (
     <>
+      <Row>
+        <SyncAccordion />
+      </Row>
+      <Row className="mt-2">
+        <h3>Notes</h3>
+      </Row>
       <Row>
         <Col>
           <Row>

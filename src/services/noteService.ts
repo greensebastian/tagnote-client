@@ -9,6 +9,7 @@ export interface NoteService {
   notes: Observable<NoteModel[]>;
   currentNotes: () => NoteModel[];
   setNote: (note: NoteModel) => void;
+  setNotes: (notes: NoteModel[]) => void;
   deleteNote: (id: string) => void;
   tags: (predicate?: (tag: string) => boolean) => string[];
 }
@@ -58,6 +59,7 @@ const CreateNoteService: NoteServiceInitializer = ({ initialNotes }) => {
     notes: notesSubject.asObservable(),
     currentNotes: () => notesSubject.getValue(),
     setNote,
+    setNotes,
     deleteNote,
     tags,
   };

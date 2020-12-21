@@ -2,9 +2,10 @@ import React, { FunctionComponent, useCallback, useEffect } from "react";
 import { useState } from "react";
 import useObservable from "../hooks/useObservable";
 import { skip } from "rxjs/operators";
-import { setInStorage, StorageKeys } from "../util/localStorage";
+import { setInStorage } from "../util/localStorage";
 import { useNotes } from "./notesContext";
-import { useNoteService } from "./noteServiceContext";
+import { useNoteService } from "./serviceContext";
+import { StorageKeys } from "../util/resolve";
 
 export interface SaveContextState {
   unsaved: boolean;

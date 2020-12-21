@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useState } from "react";
 import useObservable from "../hooks/useObservable";
 import NoteModel from "../models/noteModel";
-import { useNoteService } from "./noteServiceContext";
+import { useNoteService } from "./serviceContext";
 
 export interface NotesContextState {
   notes: NoteModel[];

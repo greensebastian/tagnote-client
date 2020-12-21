@@ -2,7 +2,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { NoteParameters } from "./appRouter";
 import Note from "../components/note";
-import { useNoteService } from "../contexts/noteServiceContext";
+import { useNoteService } from "../contexts/serviceContext";
 import { useNotes } from "../contexts/notesContext";
 
 const NoteRoute = (props: RouteComponentProps<NoteParameters>) => {

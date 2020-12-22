@@ -5,11 +5,11 @@ import {
   useNoteService,
   useSyncService,
   useWebClientService,
-} from "../contexts/serviceContext";
-import { useNotes } from "../contexts/notesContext";
+} from "../../contexts/serviceContext";
+import { useNotes } from "../../contexts/notesContext";
 import { Row } from "react-bootstrap";
-import { SyncStrategy } from "../services/syncService";
-import { mapEnum } from "../util/enumUtil";
+import { SyncStrategy } from "../../services/syncService";
+import { mapEnum } from "../../util/enumUtil";
 
 const Sync: FunctionComponent = () => {
   const syncService = useSyncService();

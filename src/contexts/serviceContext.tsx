@@ -1,30 +1,35 @@
 import React, { FunctionComponent, useContext } from "react";
-import { NoteService } from "../services/noteService";
-import SyncService from "../services/syncService";
-import WebClientService from "../services/webClientService";
+import { IBackupService } from "../services/backupService";
+import { INoteService } from "../services/noteService";
+import { ISyncService } from "../services/syncService";
+import { IWebClientService } from "../services/webClientService";
 
 export interface ServiceContextState {
-  noteService: NoteService;
-  syncService: SyncService;
-  webClientService: WebClientService;
+  noteService: INoteService;
+  syncService: ISyncService;
+  webClientService: IWebClientService;
+  backupService: IBackupService;
 }
 
 export const ServiceContext = React.createContext<ServiceContextState>({
-  noteService: {} as NoteService,
-  syncService: {} as SyncService,
-  webClientService: {} as WebClientService,
+  noteService: {} as INoteService,
+  syncService: {} as ISyncService,
+  webClientService: {} as IWebClientService,
+  backupService: {} as IBackupService,
 });
 
 export interface ServiceContextProps {
-  noteService: NoteService;
-  syncService: SyncService;
-  webClientService: WebClientService;
+  noteService: INoteService;
+  syncService: ISyncService;
+  webClientService: IWebClientService;
+  backupService: IBackupService;
 }
 
 const ServiceProvider: FunctionComponent<ServiceContextProps> = ({
   noteService,
   syncService,
   webClientService,
+  backupService,
   children,
 }) => {
   return (
@@ -33,6 +38,7 @@ const ServiceProvider: FunctionComponent<ServiceContextProps> = ({
         noteService,
         syncService,
         webClientService,
+        backupService,
       }}
     >
       {children}
@@ -44,5 +50,6 @@ export const useNoteService = () => useContext(ServiceContext).noteService;
 export const useSyncService = () => useContext(ServiceContext).syncService;
 export const useWebClientService = () =>
   useContext(ServiceContext).webClientService;
+export const useBackupService = () => useContext(ServiceContext).backupService;
 
 export default ServiceProvider;

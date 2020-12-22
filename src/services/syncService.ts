@@ -10,9 +10,17 @@ export enum SyncStrategy {
   Ask,
 }
 
+export enum SyncStatus {
+  ServerUpdated,
+  ClientUpdated,
+  NeitherUpdated,
+  BothUpdated,
+}
+
 export interface ISyncService {
   syncFromServer: (existingNotes: NoteModel[]) => Promise<NoteModel[]>;
   syncToServer: (notes: NoteModel[]) => Promise<boolean>;
+  strategy: SyncStrategy;
 }
 
 export default class SyncService implements ISyncService {
@@ -92,5 +100,17 @@ export default class SyncService implements ISyncService {
   syncToServer = async (notes: NoteModel[]) => {
     await this.webClient.fetch(HttpMethod.POST, JSON.stringify(notes));
     return true;
+  };
+
+  static getSyncStatus = (client: NoteModel, server: NoteModel): SyncStatus => {
+    if (client.id !== server.id)
+      throw Error("Cannot check sync between two different notes");
+
+    const clientUpdated = client.updated > client.synced;
+    const serverUpdated = server.updated > client.synced;
+    if (clientUpdated && serverUpdated) return SyncStatus.BothUpdated;
+    else if (clientUpdated) return SyncStatus.ClientUpdated;
+    else if (serverUpdated) return SyncStatus.ServerUpdated;
+    else return SyncStatus.NeitherUpdated;
   };
 }

@@ -6,7 +6,7 @@ import Filter from "../components/filter";
 import { useHistory } from "react-router-dom";
 import { useNotes } from "../contexts/notesContext";
 import { useNoteService } from "../contexts/serviceContext";
-import SyncAccordion from "../components/syncAccordion";
+import { Routes } from "./appRouter";
 
 export type NoteFilterPredicate = {
   (note: NoteModel): boolean;
@@ -29,13 +29,10 @@ const NotesRoute = () => {
   const createNewNote = () => {
     const newNote = new NoteModel("New note");
     noteService.setNote(newNote);
-    history.push("/" + newNote.id);
+    history.push(Routes.Notes + "/" + newNote.id);
   };
   return (
     <>
-      <Row>
-        <SyncAccordion />
-      </Row>
       <Row className="mt-2">
         <h3>Notes</h3>
       </Row>

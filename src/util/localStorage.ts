@@ -1,7 +1,7 @@
 import { Resolver, resolvers, StorageKeys } from "./resolve";
 
 export const getFromStorage = <TOut>(
-  key: StorageKeys,
+  key: StorageKeys | string,
   resolver?: Resolver<TOut>
 ) => {
   var text = localStorage.getItem(key);
@@ -12,6 +12,14 @@ export const getFromStorage = <TOut>(
   return text ? resolver(text) : null;
 };
 
-export const setInStorage = <TIn>(key: StorageKeys, value: TIn) => {
+export const setInStorage = <TIn>(key: StorageKeys | string, value: TIn) => {
   localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const getKeysInStorage = () => {
+  const keys = new Set<string>();
+  for (var i = 0, len = localStorage.length; i < len; ++i) {
+    keys.add(localStorage.key(i)!);
+  }
+  return keys;
 };

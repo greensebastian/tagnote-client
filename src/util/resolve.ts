@@ -7,9 +7,11 @@ export interface Resolver<TOut> {
 
 export enum StorageKeys {
   Notes = "notes",
+  NotesBackup = "notes-backup",
 }
 
-export const resolvers: EnumDictionary<StorageKeys, Resolver<any>> = {
+export const resolvers: EnumDictionary<StorageKeys | string, Resolver<any>> = {
   [StorageKeys.Notes]: (data) =>
     Array.from(JSON.parse(data)).map(NoteModel.resolve),
+  [StorageKeys.NotesBackup]: (data) => JSON.parse(data),
 };

@@ -7,6 +7,7 @@ import TagModel from "../models/tagModel";
 import EditableNoteHeader from "./editableNoteHeader";
 import { useHistory } from "react-router-dom";
 import ConfirmModal from "./confirmModal";
+import { Routes } from "../routes/appRouter";
 
 type NoteProps = {
   note: NoteModel;
@@ -61,7 +62,7 @@ const Note = ({ note, setNote, deleteNote }: NoteProps) => {
   const [showModal, setShowModal] = useState(false);
   const deleteAndRedirect = () => {
     deleteNote(note.id);
-    history.push("/");
+    history.push(Routes.Home);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

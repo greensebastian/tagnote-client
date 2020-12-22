@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.scss";
 import { Container, Navbar } from "react-bootstrap";
-import AppRouter from "./routes/appRouter";
+import AppRouter, { Routes } from "./routes/appRouter";
 import SaveAlert from "./components/saveAlert";
 import NoteContextProviders from "./components/noteContextProviders";
 
@@ -10,7 +10,7 @@ function App() {
     <NoteContextProviders>
       <Navbar bg="dark" variant="dark" className="mb-2">
         <Container>
-          <Navbar.Brand href="/">Tag Note</Navbar.Brand>
+          <Navbar.Brand href={Routes.Home}>Tag Note</Navbar.Brand>
         </Container>
       </Navbar>
       <Container>

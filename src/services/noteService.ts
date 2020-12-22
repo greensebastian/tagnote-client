@@ -1,11 +1,7 @@
 import { BehaviorSubject, Observable } from "rxjs";
 import NoteModel from "../models/noteModel";
 
-export interface NoteServiceInitializerProps {
-  initialNotes?: NoteModel[];
-}
-
-export interface NoteService {
+export interface INoteService {
   notes: Observable<NoteModel[]>;
   currentNotes: () => NoteModel[];
   setNote: (note: NoteModel) => void;
@@ -14,40 +10,43 @@ export interface NoteService {
   tags: (predicate?: (tag: string) => boolean) => string[];
 }
 
-export interface NoteServiceInitializer {
-  (props: NoteServiceInitializerProps): NoteService;
-}
+export default class NoteService implements INoteService {
+  private notesSubject: BehaviorSubject<NoteModel[]>;
 
-const CreateNoteService: NoteServiceInitializer = ({ initialNotes }) => {
-  const notesSubject = new BehaviorSubject<NoteModel[]>(initialNotes ?? []);
+  notes: Observable<NoteModel[]>;
 
-  const setNotes = (newNotes: NoteModel[]) => notesSubject.next(newNotes);
+  constructor(initialNotes?: NoteModel[]) {
+    this.notesSubject = new BehaviorSubject<NoteModel[]>(initialNotes ?? []);
+    this.notes = this.notesSubject.asObservable();
+  }
 
-  const setNote = (note: NoteModel) => {
+  setNotes = (newNotes: NoteModel[]) => this.notesSubject.next(newNotes);
+
+  setNote = (note: NoteModel) => {
     note = NoteModel.resolve(note);
     // Setting a note should replace existing with same id or make a new one
     note.updated = new Date();
-    const newNotes = [...notesSubject.value];
+    const newNotes = [...this.notesSubject.value];
     const existingNote = newNotes.find((n) => n.id === note.id);
     if (existingNote) {
       newNotes[newNotes.indexOf(existingNote)] = note;
     } else {
       newNotes.push(note);
     }
-    setNotes(newNotes);
+    this.setNotes(newNotes);
   };
 
-  const deleteNote = (id: string) => {
-    const notes = notesSubject.value;
+  deleteNote = (id: string) => {
+    const notes = this.notesSubject.value;
     const noteToRemove = notes.find((note) => note.id === id);
     if (noteToRemove) {
       notes.splice(notes.indexOf(noteToRemove), 1);
-      setNotes([...notes]);
+      this.setNotes([...notes]);
     }
   };
 
-  const tags = (predicate?: (tag: string) => boolean) => {
-    const notes = notesSubject.value;
+  tags = (predicate?: (tag: string) => boolean) => {
+    const notes = this.notesSubject.value;
     let allTags = new Set<string>();
     notes.forEach((note) => note.tags.forEach(allTags.add));
     return Array.from(allTags).filter((tag) =>
@@ -55,14 +54,5 @@ const CreateNoteService: NoteServiceInitializer = ({ initialNotes }) => {
     );
   };
 
-  return {
-    notes: notesSubject.asObservable(),
-    currentNotes: () => notesSubject.getValue(),
-    setNote,
-    setNotes,
-    deleteNote,
-    tags,
-  };
-};
-
-export default CreateNoteService;
+  currentNotes = () => this.notesSubject.getValue();
+}

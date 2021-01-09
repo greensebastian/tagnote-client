@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 import {
   useNoteService,
   useSyncService,
-  useWebClientService,
+  useAuthorizedWebClientService,
 } from "../../contexts/serviceContext";
 import { useNotes } from "../../contexts/notesContext";
 import { Row } from "react-bootstrap";
@@ -13,7 +13,7 @@ import { mapEnum } from "../../util/enumUtil";
 
 const Sync: FunctionComponent = () => {
   const syncService = useSyncService();
-  const webClientService = useWebClientService();
+  const authorizedWebClientService = useAuthorizedWebClientService();
   const { setNotes } = useNoteService();
   const notes = useNotes();
 
@@ -46,7 +46,7 @@ const Sync: FunctionComponent = () => {
 
   const setAuthProperty = (value: string, setter: (value: string) => void) => {
     setter(value);
-    webClientService.setAuth(username, password, secret);
+    authorizedWebClientService.setAuth(username, password, secret);
   };
 
   const [syncStrategy, setSyncStrategy] = useState(SyncStrategy.KeepNewest);

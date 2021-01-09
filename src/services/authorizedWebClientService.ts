@@ -1,6 +1,8 @@
-export interface IWebClientService {
+import { IFetchService } from "./fetchService";
+
+export interface IAuthorizedWebClientService {
   setAuth: (username: string, password: string, secretKey: string) => void;
-  fetch: (method: HttpMethod) => Promise<string>;
+  fetch: (method: HttpMethod, body?: string) => Promise<string>;
 }
 
 export enum HttpMethod {
@@ -9,15 +11,17 @@ export enum HttpMethod {
   DELETE,
 }
 
-export default class WebClientService implements IWebClientService {
+export default class AuthorizedWebClientService implements IAuthorizedWebClientService {
   private endpoint: string;
+  private fetchService: IFetchService;
 
   private username?: string;
   private password?: string;
   private secretKey?: string;
 
-  constructor(endpoint: string) {
+  constructor(endpoint: string, fetchService: IFetchService) {
     this.endpoint = endpoint;
+    this.fetchService = fetchService;
   }
 
   setAuth(username: string, password: string, secretKey: string) {
@@ -30,7 +34,7 @@ export default class WebClientService implements IWebClientService {
     const headers = new Headers();
     this.appendAuthHeaders(headers);
 
-    return await fetch(this.endpoint, {
+    return await this.fetchService.fetch(this.endpoint, {
       method: HttpMethod[method],
       headers: headers,
       body: body,

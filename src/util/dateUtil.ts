@@ -24,3 +24,9 @@ export const fromBasicDateString = (dateString: string) => {
 
   return new Date(year, month, date, hour, minute, second);
 };
+
+export const addDays = (date: Date, days: number) => {
+  const newDate = new Date(date);
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+}

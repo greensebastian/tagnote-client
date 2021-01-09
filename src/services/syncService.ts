@@ -1,6 +1,6 @@
 import NoteModel from "../models/noteModel";
 import { resolvers, StorageKeys } from "../util/resolve";
-import WebClientService, { HttpMethod } from "./webClientService";
+import { HttpMethod, IAuthorizedWebClientService } from "./authorizedWebClientService";
 
 export enum SyncStrategy {
   KeepServer,
@@ -25,13 +25,13 @@ export interface ISyncService {
 
 export default class SyncService implements ISyncService {
   public strategy: SyncStrategy;
-  private webClient: WebClientService;
+  private webClient: IAuthorizedWebClientService;
 
   private conflictResolver;
 
   constructor(
     strategy: SyncStrategy,
-    webClient: WebClientService,
+    webClient: IAuthorizedWebClientService,
     conflictResolver?: (
       clientNote: NoteModel,
       serverNote: NoteModel
@@ -49,6 +49,10 @@ export default class SyncService implements ISyncService {
     clientNote: NoteModel,
     serverNote: NoteModel
   ) => {
+    if (clientNote.equals(serverNote))
+      return serverNote.updated > clientNote.updated
+        ? Promise.resolve(serverNote)
+        : Promise.resolve(clientNote);
     switch (this.strategy) {
       case SyncStrategy.KeepServer:
         return Promise.resolve(serverNote);
@@ -82,7 +86,7 @@ export default class SyncService implements ISyncService {
     ) as NoteModel[];
 
     const newNotes = [...clientNotes];
-    await parsedServerNotes.forEach(async (serverNote) => {
+    for (let serverNote of parsedServerNotes) {
       const clientNote = newNotes.find((note) => note.id === serverNote.id);
       if (clientNote) {
         newNotes[newNotes.indexOf(clientNote)] = await this.resolveUpdate(
@@ -92,7 +96,7 @@ export default class SyncService implements ISyncService {
       } else {
         newNotes.push(serverNote);
       }
-    });
+    }
 
     return newNotes;
   };

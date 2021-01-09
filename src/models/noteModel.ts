@@ -29,12 +29,13 @@ class NoteModel {
 
   equals = (other: NoteModel) => {
     if (!other) return false;
+    debugger;
     const checks = [
       this.id === other.id,
       this.title === other.title,
       this.description === other.description,
       this.tags.every(other.tags.includes) &&
-        other.tags.every(this.tags.includes),
+      other.tags.every(this.tags.includes),
       [...this.tags, ...other.tags].every(
         (tag) => this.colorMap[tag] === other.colorMap[tag]
       ),

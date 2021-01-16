@@ -1,6 +1,9 @@
 import NoteModel from "../models/noteModel";
 import { resolvers, StorageKeys } from "../util/resolve";
-import { HttpMethod, IAuthorizedWebClientService } from "./authorizedWebClientService";
+import {
+  HttpMethod,
+  IAuthorizedWebClientService,
+} from "./authorizedWebClientService";
 
 export enum SyncStrategy {
   KeepServer,
@@ -17,25 +20,27 @@ export enum SyncStatus {
   BothUpdated,
 }
 
+export interface SyncConflictResolver {
+  (clientNote: NoteModel, serverNote: NoteModel): Promise<NoteModel>;
+}
+
 export interface ISyncService {
   syncFromServer: (existingNotes: NoteModel[]) => Promise<NoteModel[]>;
   syncToServer: (notes: NoteModel[]) => Promise<boolean>;
   strategy: SyncStrategy;
+  conflictResolver?: SyncConflictResolver;
 }
 
 export default class SyncService implements ISyncService {
   public strategy: SyncStrategy;
   private webClient: IAuthorizedWebClientService;
 
-  private conflictResolver;
+  public conflictResolver;
 
   constructor(
     strategy: SyncStrategy,
     webClient: IAuthorizedWebClientService,
-    conflictResolver?: (
-      clientNote: NoteModel,
-      serverNote: NoteModel
-    ) => Promise<NoteModel>
+    conflictResolver?: SyncConflictResolver
   ) {
     this.strategy = strategy;
     this.webClient = webClient;
@@ -49,10 +54,12 @@ export default class SyncService implements ISyncService {
     clientNote: NoteModel,
     serverNote: NoteModel
   ) => {
-    if (clientNote.equals(serverNote))
+    if (NoteModel.equal(clientNote, serverNote))
       return serverNote.updated > clientNote.updated
         ? Promise.resolve(serverNote)
         : Promise.resolve(clientNote);
+
+    // Resolve conflict using strategy
     switch (this.strategy) {
       case SyncStrategy.KeepServer:
         return Promise.resolve(serverNote);
@@ -68,10 +75,19 @@ export default class SyncService implements ISyncService {
           : Promise.resolve(serverNote);
       case SyncStrategy.Ask: {
         if (!this.conflictResolver)
-          // TODO make a resolver UI for this
           throw Error(
             "Cannot specify ask strategy without providing a resolver"
           );
+        // Filter out trivial note updates
+        let syncState = SyncService.getSyncStatus(clientNote, serverNote);
+        if (
+          syncState === SyncStatus.NeitherUpdated ||
+          syncState === SyncStatus.ClientUpdated
+        ) {
+          return clientNote;
+        } else if (syncState === SyncStatus.ServerUpdated) {
+          return serverNote;
+        }
         return await this.conflictResolver(clientNote, serverNote);
       }
       default:
@@ -87,7 +103,7 @@ export default class SyncService implements ISyncService {
 
     const newNotes = [...clientNotes];
     for (let serverNote of parsedServerNotes) {
-      const clientNote = newNotes.find((note) => note.id === serverNote.id);
+      let clientNote = newNotes.find((note) => note.id === serverNote.id);
       if (clientNote) {
         newNotes[newNotes.indexOf(clientNote)] = await this.resolveUpdate(
           clientNote,
@@ -97,6 +113,10 @@ export default class SyncService implements ISyncService {
         newNotes.push(serverNote);
       }
     }
+
+    newNotes.forEach((note) => {
+      note.synced = new Date();
+    });
 
     return newNotes;
   };

@@ -20,7 +20,8 @@ export default class NoteService implements INoteService {
     this.notes = this.notesSubject.asObservable();
   }
 
-  setNotes = (newNotes: NoteModel[]) => this.notesSubject.next(newNotes);
+  setNotes = (newNotes: NoteModel[]) =>
+    this.notesSubject.next(newNotes.map(NoteModel.resolve));
 
   setNote = (note: NoteModel) => {
     note = NoteModel.resolve(note);

@@ -1,24 +1,24 @@
 import React from "react";
 import "./App.scss";
-import { Container, Navbar } from "react-bootstrap";
-import AppRouter, { Routes } from "./routes/appRouter";
+import { Container } from "react-bootstrap";
+import AppRouter from "./routes/appRouter";
 import SaveAlert from "./components/saveAlert";
 import NoteContextProviders from "./components/noteContextProviders";
+import { BrowserRouter } from "react-router-dom";
+import Navigation from "./components/navigation";
 
 function App() {
   return (
     <NoteContextProviders>
-      <Navbar bg="dark" variant="dark" className="mb-2">
+      <BrowserRouter>
+        <Navigation />
         <Container>
-          <Navbar.Brand href={Routes.Home}>Tag Note</Navbar.Brand>
+          <SaveAlert />
+          <div className="px-3 px-sm-0">
+            <AppRouter />
+          </div>
         </Container>
-      </Navbar>
-      <Container>
-        <SaveAlert />
-        <div className="px-3 px-sm-0">
-          <AppRouter />
-        </div>
-      </Container>
+      </BrowserRouter>
     </NoteContextProviders>
   );
 }

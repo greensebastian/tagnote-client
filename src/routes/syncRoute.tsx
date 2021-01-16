@@ -1,12 +1,17 @@
 import React from "react";
 import { Row } from "react-bootstrap";
-import SyncAccordion from "../components/sync/syncAccordion";
+import Sync from "../components/sync/sync";
 
 const SyncRoute = () => {
   return (
-    <Row>
-      <SyncAccordion />
-    </Row>
+    <>
+      <Row className="mt-2">
+        <h3>Sync</h3>
+      </Row>
+      <Row>
+        <Sync />
+      </Row>
+    </>
   );
 };
 

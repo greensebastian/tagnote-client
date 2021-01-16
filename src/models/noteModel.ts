@@ -27,17 +27,16 @@ class NoteModel {
     this.version = 2;
   }
 
-  equals = (other: NoteModel) => {
-    if (!other) return false;
-    debugger;
-    const checks = [
-      this.id === other.id,
-      this.title === other.title,
-      this.description === other.description,
-      this.tags.every(other.tags.includes) &&
-      other.tags.every(this.tags.includes),
-      [...this.tags, ...other.tags].every(
-        (tag) => this.colorMap[tag] === other.colorMap[tag]
+  static equal = (thisNote: NoteModel, otherNote: NoteModel) => {
+    if (!thisNote || !otherNote) return false;
+    let checks = [
+      thisNote.id === otherNote.id,
+      thisNote.title === otherNote.title,
+      thisNote.description === otherNote.description,
+      thisNote.tags.every((tag) => otherNote.tags.includes(tag)) &&
+        otherNote.tags.every((tag) => thisNote.tags.includes(tag)),
+      [...thisNote.tags, ...otherNote.tags].every(
+        (tag) => thisNote.colorMap[tag] === otherNote.colorMap[tag]
       ),
     ];
     return checks.every((result) => result);
@@ -56,10 +55,9 @@ class NoteModel {
 
   private static doMigrations = (note: NoteModel) => {
     if (!note.version || note.version === 0) note.version = 1;
-    switch (note.version) {
-      case 1:
-        note.synced = note.created;
-        note.version = 1;
+    if (note.version <= 1) {
+      note.synced = note.created;
+      note.version = 2;
     }
   };
 

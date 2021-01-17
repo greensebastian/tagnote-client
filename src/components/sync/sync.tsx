@@ -59,10 +59,17 @@ const Sync: FunctionComponent = () => {
   const handleFromServerClick = useCallback(() => {
     if (saving) return;
     setSaving(true);
-    syncService.syncFromServer(notes).then((data) => {
-      setSaving(false);
-      setNotes(data);
-    });
+    syncService
+      .syncFromServer(notes)
+      .then((data) => {
+        setSaving(false);
+        setNotes(data);
+      })
+      .catch((e) => {
+        // TODO better error reporting here
+        console.error(e);
+        setSaving(false);
+      });
   }, [notes, saving, setNotes, syncService]);
 
   const [username, setUsername] = useState("");
@@ -77,11 +84,13 @@ const Sync: FunctionComponent = () => {
     authorizedWebClientService.setAuth(username, password, secret);
   };
 
-  const [syncStrategy, setSyncStrategy] = useState(SyncStrategy.Ask);
+  const defaultStrategy = SyncStrategy.Ask;
+  const [syncStrategy, setSyncStrategy] = useState(defaultStrategy);
   const handleStrategyChange = (newStrategy: number) => {
     setSyncStrategy(newStrategy);
     syncService.strategy = newStrategy;
   };
+  syncService.strategy = defaultStrategy;
 
   useEffect(() => {
     const poller = setInterval(() => {
@@ -90,7 +99,7 @@ const Sync: FunctionComponent = () => {
       setAuthProperty((usernameRef.current as any).value, setUsername);
       setAuthProperty((passwordRef.current as any).value, setPassword);
       setAuthProperty((secretRef.current as any).value, setSecret);
-    }, 250);
+    }, 50);
 
     return () => clearInterval(poller);
   });
